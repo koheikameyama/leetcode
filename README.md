@@ -1,5 +1,7 @@
 # LeetCode Solutions
 
+- [SNIPPETS.md](SNIPPETS.md) — 出会った関数・構文のメモ（カテゴリ別）
+
 ## 問題一覧
 
 | # | 問題 | 難易度 | タグ |
