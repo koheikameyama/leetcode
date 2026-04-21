@@ -2,7 +2,7 @@
 
 - Difficulty: Easy
 - Tags: Math, String
-- URL: https://leetcode.com/problems/greatest-common-divisor-of-strings/
+- URL: <https://leetcode.com/problems/greatest-common-divisor-of-strings/>
 
 ## 問題
 

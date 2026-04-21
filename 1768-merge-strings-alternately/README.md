@@ -2,7 +2,7 @@
 
 - Difficulty: Easy
 - Tags: Two Pointers, String
-- URL: https://leetcode.com/problems/merge-strings-alternately/
+- URL: <https://leetcode.com/problems/merge-strings-alternately/>
 
 ## 問題
 
