@@ -153,6 +153,33 @@ if char in vowels:  # ハッシュテーブルで即座に検索
 - 重複を許さないため、ユニークな要素を扱う場合にも便利
 - 順序は保証されない（Python 3.7+ の dict とは異なる）
 
+**文字列 vs set の比較:**
+
+```python
+# 文字列: O(n) - 線形探索（要素数分の比較が必要）
+vowels = 'aeiouAEIOU'  # 10文字
+for char in s:
+    if char in vowels:  # 最悪10回の比較
+        ...
+
+# set: O(1) - ハッシュテーブル（即座に判定）
+vowels = set('aeiouAEIOU')  # {10個の要素}
+for char in s:
+    if char in vowels:  # 1回で判定完了
+        ...
+```
+
+**いつ set に変換すべきか:**
+
+| 状況 | 推奨 | 理由 |
+|------|------|------|
+| ループで何度も `in` を使う | **set** | 累積コストが下がる |
+| 検索対象が多い（100+文字） | **set** | 線形探索のコストが高い |
+| 1回だけ検索する | 文字列でOK | 変換コスト > 検索コスト |
+| 検索対象が少ない（<10文字） | どちらでもOK | 実用上の差は小さい |
+
+**結論:** 要素数が少なくても、**ループ内で何度も検索する場合は set が有利**。コーディング面接では、この最適化を説明できることが評価される。
+
 - Docs: https://docs.python.org/3/library/stdtypes.html#set
 - 出会った問題: [345. Reverse Vowels of a String](345-reverse-vowels-of-a-string/)
 
