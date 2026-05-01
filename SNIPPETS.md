@@ -60,3 +60,132 @@ gcd(7, 3)    # 1（互いに素）
 
 - Docs: https://docs.python.org/3/library/math.html#math.gcd
 - 出会った問題: [1071. Greatest Common Divisor of Strings](1071-greatest-common-divisor-of-strings/)
+
+## collections
+
+### `deque`
+
+両端からの追加・削除が高速（O(1)）なキュー。リストの `pop(0)` は O(n) だが、`deque.popleft()` は O(1)。
+
+```python
+from collections import deque
+
+q = deque([1, 2, 3])
+q.popleft()  # O(1) で先頭削除
+# 1
+
+q.append(4)  # 末尾に追加
+# deque([2, 3, 4])
+
+q.appendleft(0)  # 先頭に追加
+# deque([0, 2, 3, 4])
+```
+
+**シグネチャ:** `deque([iterable[, maxlen]])`
+
+**引数:**
+
+- `iterable`: 初期値として設定するイテラブル（省略可）
+- `maxlen`: 最大長を指定すると、超過分は自動的に削除される（省略可）
+
+**ポイント:**
+
+- リストの `pop(0)` は O(n)（全要素をシフトするため）
+- キューのような操作（FIFO）には必ず `deque` を使う
+- 両端操作が多い場合にも有効（例: スライディングウィンドウ）
+
+- Docs: https://docs.python.org/3/library/collections.html#collections.deque
+- 出会った問題: [345. Reverse Vowels of a String](345-reverse-vowels-of-a-string/)
+
+## string
+
+### `''.join(list)` で文字列を結合
+
+ループ内で `+=` を使った文字列連結は、毎回新しい文字列オブジェクトを作成するため非効率（O(n²)）。`''.join()` を使うと O(n) で済む。
+
+```python
+# ❌ 遅い（O(n²)）
+result = ''
+for char in ['a', 'b', 'c']:
+    result += char
+
+# ✅ 速い（O(n)）
+result = ''.join(['a', 'b', 'c'])
+# 'abc'
+```
+
+**シグネチャ:** `separator.join(iterable)`
+
+**引数:**
+
+- `separator`: 区切り文字（例: `','`, `' '`, `''`）
+- `iterable`: 結合したい文字列のイテラブル
+
+**ポイント:**
+
+- Python の文字列は immutable なので、`+=` は毎回新しいオブジェクトを作る
+- リスト内包表記と組み合わせるとさらに強力（例: `''.join([c.upper() for c in s])`）
+
+- Docs: https://docs.python.org/3/library/stdtypes.html#str.join
+- 出会った問題: [345. Reverse Vowels of a String](345-reverse-vowels-of-a-string/)
+
+## set
+
+### set で高速検索（O(1)）
+
+`in` 演算を頻繁に行う場合、リストよりも set の方が圧倒的に速い（O(1) vs O(n)）。
+
+```python
+# ❌ 遅い（O(n) × ループ回数 = O(n²)）
+vowels = 'aeiou'
+if char in vowels:  # 文字列を毎回線形探索
+    ...
+
+# ✅ 速い（O(1) × ループ回数 = O(n)）
+vowels = set('aeiou')
+if char in vowels:  # ハッシュテーブルで即座に検索
+    ...
+```
+
+**ポイント:**
+
+- set はハッシュテーブルで実装されているため、検索が O(1)
+- 重複を許さないため、ユニークな要素を扱う場合にも便利
+- 順序は保証されない（Python 3.7+ の dict とは異なる）
+
+- Docs: https://docs.python.org/3/library/stdtypes.html#set
+- 出会った問題: [345. Reverse Vowels of a String](345-reverse-vowels-of-a-string/)
+
+## パターン
+
+### Two Pointers（両端から探索）
+
+配列の両端からポインタを動かし、条件を満たす要素を探索・処理するパターン。
+
+```python
+left, right = 0, len(arr) - 1
+
+while left < right:
+    if condition(arr[left], arr[right]):
+        # 処理
+        left += 1
+        right -= 1
+    elif ...:
+        left += 1
+    else:
+        right -= 1
+```
+
+**使いどころ:**
+
+- 配列の両端から探索したい場合（例: palindrome判定、反転、ペア探索）
+- ソート済み配列で2つの要素の和を探す（例: Two Sum II）
+- In-place で配列を操作したい場合
+
+**ポイント:**
+
+- 1パスで処理できるため、時間計算量が O(n)
+- 空間計算量も O(1)（追加のデータ構造不要）
+- 類似問題: "Valid Palindrome", "Container With Most Water", "3Sum"
+
+- 出会った問題: [345. Reverse Vowels of a String](345-reverse-vowels-of-a-string/)
